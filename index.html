@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTOVRS Application - Full Detailed</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for statistics charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons for UI icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent body scroll */
+        }
+        /* Custom scrollbar for a better look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Hide all views by default */
+        .view {
+            display: none;
+        }
+        /* Show the active view */
+        .view.active {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .image-container {
+            position: relative;
+            cursor: crosshair;
+        }
+        .point-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Main Application Container -->
+    <div id="app-container" class="flex h-screen bg-gray-200">
+
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-64 bg-gray-800 text-white flex-shrink-0 flex-col hidden">
+            <div class="p-6 text-2xl font-bold border-b border-gray-700">
+                AutoVRS
+            </div>
+            <nav class="flex-grow p-4 space-y-2">
+                <a href="#" data-view="Homeview" class="nav-link flex items-center px-4 py-2 rounded-md hover:bg-gray-700">
+                    <i data-lucide="home" class="w-5 h-5 mr-3"></i> Trang chủ
+                </a>
+                <a href="#" data-view="VRSmainView" class="nav-link flex items-center px-4 py-2 rounded-md hover:bg-gray-700">
+                    <i data-lucide="bot" class="w-5 h-5 mr-3"></i> Giám sát Auto
+                </a>
+                <a href="#" data-view="ManualVRSview" class="nav-link flex items-center px-4 py-2 rounded-md hover:bg-gray-700">
+                    <i data-lucide="hand" class="w-5 h-5 mr-3"></i> VRS Thủ công
+                </a>
+                <a href="#" data-view="StatisticsView" class="nav-link flex items-center px-4 py-2 rounded-md hover:bg-gray-700">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5 mr-3"></i> Thống kê
+                </a>
+                <a href="#" data-view="SelectModelView" class="nav-link flex items-center px-4 py-2 rounded-md hover:bg-gray-700">
+                    <i data-lucide="settings-2" class="w-5 h-5 mr-3"></i> Cài đặt Model
+                </a>
+            </nav>
+            <div class="p-4 border-t border-gray-700">
+                 <div class="flex items-center">
+                    <img src="https://placehold.co/40x40/7c3aed/ffffff?text=K" alt="User Avatar" class="rounded-full">
+                    <div class="ml-3">
+                        <p class="font-semibold">Kỹ sư A</p>
+                        <p class="text-xs text-gray-400">Đã đăng nhập</p>
+                    </div>
+                </div>
+                <button id="logout-button" class="w-full mt-4 flex items-center justify-center px-4 py-2 rounded-md bg-red-600 hover:bg-red-700">
+                    <i data-lucide="log-out" class="w-5 h-5 mr-2"></i> Đăng xuất
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Bar -->
+            <header class="bg-white shadow-md p-4 flex justify-between items-center flex-shrink-0">
+                <h1 id="view-title" class="text-2xl font-semibold text-gray-800">Trang chủ</h1>
+                <div class="text-sm text-gray-500">
+                    <span id="current-time"></span>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="flex-1 p-6 overflow-y-auto">
+
+                <!-- Homeview -->
+                <div id="Homeview" class="view">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+                        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer" data-view="SelectModelView">
+                            <i data-lucide="settings" class="w-16 h-16 text-blue-500 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Cài đặt tham số</h2>
+                            <p class="text-gray-600">Thiết lập, chọn hoặc tạo mới bộ tham số cho lô hàng sản xuất.</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer" data-view="VRSmainView">
+                            <i data-lucide="bot" class="w-16 h-16 text-green-500 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Auto VRS</h2>
+                            <p class="text-gray-600">Theo dõi quá trình phán định lỗi tự động của AI.</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer" data-view="ManualVRSview">
+                            <i data-lucide="hand" class="w-16 h-16 text-orange-500 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">VRS Thủ công</h2>
+                            <p class="text-gray-600">Kỹ sư trực tiếp xem, hiệu chỉnh và phán định các lỗi bất thường.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SelectModelView -->
+                <div id="SelectModelView" class="view">
+                    <div class="bg-white p-6 rounded-lg shadow-md w-full">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold">Chọn bộ tham số mã hàng</h2>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center" data-view="AddNewModelView">
+                                <i data-lucide="plus" class="w-5 h-5 mr-2"></i> Thêm mã hàng mới
+                            </button>
+                        </div>
+                        <input type="text" placeholder="Tìm kiếm mã hàng..." class="w-full p-2 border rounded-md mb-4">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="p-3">Mã hàng (id_model)</th>
+                                        <th class="p-3">Kích thước đường mạch</th>
+                                        <th class="p-3">Kích thước khoảng trống</th>
+                                        <th class="p-3 text-center">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="p-3 font-medium">MODEL-001</td>
+                                        <td class="p-3">0.125</td>
+                                        <td class="p-3">0.150</td>
+                                        <td class="p-3 text-center">
+                                            <button class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 confirm-model-btn">Chọn</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="p-3 font-medium">MODEL-002-XYZ</td>
+                                        <td class="p-3">0.110</td>
+                                        <td class="p-3">0.130</td>
+                                        <td class="p-3 text-center">
+                                            <button class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 confirm-model-btn">Chọn</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AddNewModelView -->
+                <div id="AddNewModelView" class="view">
+                     <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto w-full">
+                        <h2 class="text-xl font-semibold mb-4">Thêm mã hàng mới</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Mã hàng (id_model)</label>
+                                <input type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                            </div>
+                             <div>
+                                <label class="block text-sm font-medium text-gray-700">Kích thước đường mạch (line_size)</label>
+                                <input type="number" step="0.001" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                            </div>
+                             <div>
+                                <label class="block text-sm font-medium text-gray-700">Kích thước khoảng trống (space_size)</label>
+                                <input type="number" step="0.001" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Đường dẫn file Gerber (url_gerber)</label>
+                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                    <div class="space-y-1 text-center">
+                                        <i data-lucide="file-up" class="mx-auto h-12 w-12 text-gray-400"></i>
+                                        <div class="flex text-sm text-gray-600">
+                                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500">
+                                                <span>Tải tệp lên</span>
+                                                <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                            </label>
+                                            <p class="pl-1">hoặc kéo và thả</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end space-x-3 mt-6">
+                            <button class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400" data-view="SelectModelView">Hủy</button>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Lưu</button>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- VRSmainView (Auto) -->
+                <div id="VRSmainView" class="view">
+                    <div class="flex flex-col lg:flex-row gap-6 w-full">
+                        <!-- Image Display Panel -->
+                        <div class="flex-grow bg-white p-4 rounded-lg shadow-md flex flex-col gap-4">
+                            <!-- Main Live Image -->
+                            <div>
+                                <h3 class="font-semibold mb-2">Ảnh Live từ VRS</h3>
+                                <div class="relative bg-black rounded-md aspect-video flex items-center justify-center">
+                                    <img src="https://placehold.co/800x450/000000/FFFFFF?text=Live+VRS+Image" alt="Live VRS Image" class="max-w-full max-h-full object-contain rounded-md">
+                                    <div class="absolute border-2 border-red-500" style="left: 45%; top: 40%; width: 10%; height: 20%;"></div>
+                                </div>
+                            </div>
+                            <!-- Gerber and AOI Images -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-semibold mb-2">Ảnh từ Thiết kế Gerber</h3>
+                                    <div class="relative bg-gray-700 rounded-md aspect-video flex items-center justify-center">
+                                        <img src="https://placehold.co/400x225/555555/FFFFFF?text=Gerber+View" alt="Gerber View" class="max-w-full max-h-full object-contain rounded-md">
+                                        <div class="absolute border-2 border-yellow-400" style="left: 45%; top: 40%; width: 10%; height: 20%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Ảnh từ PCI AOI</h3>
+                                    <div class="relative bg-gray-200 rounded-md aspect-video flex items-center justify-center">
+                                        <img src="https://placehold.co/400x225/dddddd/000000?text=AOI+Capture" alt="AOI Capture" class="max-w-full max-h-full object-contain rounded-md">
+                                        <div class="absolute border-2 border-blue-500" style="left: 45%; top: 40%; width: 10%; height: 20%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Info Panel -->
+                        <div class="w-full lg:w-96 bg-white p-4 rounded-lg shadow-md flex flex-col flex-shrink-0">
+                             <h3 class="font-semibold text-lg mb-4 border-b pb-2">Thông tin phán định Tự động</h3>
+                             <div class="space-y-3 flex-grow">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Mã Lô (id_lot):</span>
+                                    <span class="font-semibold">LOT-A-452</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Tọa độ lỗi:</span>
+                                    <span class="font-semibold">(125.3, 450.8)</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Kích thước (H x W):</span>
+                                    <span class="font-semibold">0.5mm x 0.3mm</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Loại lỗi:</span>
+                                    <span class="font-semibold">Hở mạch</span>
+                                </div>
+                                <div class="mt-4 pt-4 border-t">
+                                    <p class="text-gray-600 text-center mb-2">Kết quả phán định AI</p>
+                                    <div id="judgement-result" class="text-4xl font-bold text-center p-4 rounded-lg bg-red-100 text-red-600">
+                                        NG
+                                    </div>
+                                </div>
+                             </div>
+                             <button class="w-full mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 flex items-center justify-center" data-view="StatisticsView">
+                                <i data-lucide="bar-chart-3" class="w-5 h-5 mr-2"></i> Xem Thống kê
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- StatisticsView -->
+                <div id="StatisticsView" class="view">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer" data-view="NG_rateView">
+                            <i data-lucide="pie-chart" class="w-16 h-16 text-purple-500 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Thống kê phán định</h2>
+                            <p class="text-gray-600">Xem tỉ lệ NG/OK và tỉ lệ lỗi giả theo từng lô hàng.</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer" data-view="SelectLotView">
+                            <i data-lucide="list-checks" class="w-16 h-16 text-teal-500 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Thống kê loại lỗi</h2>
+                            <p class="text-gray-600">Xem chi tiết số lượng và phân loại các lỗi trong một lô hàng cụ thể.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NG_rateView -->
+                <div id="NG_rateView" class="view">
+                    <div class="bg-white p-6 rounded-lg shadow-md w-full">
+                        <h2 class="text-xl font-semibold mb-4">Thống kê tỉ lệ phán định</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="p-3">Mã Lô (id_lot)</th>
+                                        <th class="p-3">Số lượng Bo</th>
+                                        <th class="p-3">Tỉ lệ NG</th>
+                                        <th class="p-3">Tỉ lệ lỗi giả</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="p-3 font-medium">LOT-A-452</td>
+                                        <td class="p-3">500</td>
+                                        <td class="p-3"><span class="text-red-600 font-semibold">5.2%</span></td>
+                                        <td class="p-3">0.8%</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="p-3 font-medium">LOT-A-451</td>
+                                        <td class="p-3">480</td>
+                                        <td class="p-3"><span class="text-green-600 font-semibold">1.5%</span></td>
+                                        <td class="p-3">0.2%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SelectLotView -->
+                <div id="SelectLotView" class="view">
+                    <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto w-full">
+                        <h2 class="text-xl font-semibold mb-4">Chọn lô hàng để xem thống kê lỗi</h2>
+                        <ul class="space-y-2">
+                            <li class="p-3 border rounded-md hover:bg-gray-100 cursor-pointer" data-view="DefectTypeView">LOT-A-452</li>
+                            <li class="p-3 border rounded-md hover:bg-gray-100 cursor-pointer" data-view="DefectTypeView">LOT-A-451</li>
+                            <li class="p-3 border rounded-md hover:bg-gray-100 cursor-pointer" data-view="DefectTypeView">LOT-B-101</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- DefectTypeView -->
+                <div id="DefectTypeView" class="view">
+                    <div class="bg-white p-6 rounded-lg shadow-md w-full">
+                        <h2 class="text-xl font-semibold mb-4">Thống kê loại lỗi cho Lô: LOT-A-452</h2>
+                        <div class="flex flex-col lg:flex-row gap-6">
+                            <div class="lg:w-1/3">
+                                <h3 class="font-semibold text-center mb-2">Phân bố loại lỗi</h3>
+                                <canvas id="defectTypeChart"></canvas>
+                            </div>
+                            <div class="lg:w-2/3">
+                                 <h3 class="font-semibold mb-2">Danh sách chi tiết</h3>
+                                <div class="overflow-auto max-h-96">
+                                    <table class="w-full text-left">
+                                        <thead class="bg-gray-100 sticky top-0">
+                                            <tr>
+                                                <th class="p-2">ID Bất thường</th>
+                                                <th class="p-2">Loại lỗi</th>
+                                                <th class="p-2">Phán định</th>
+                                                <th class="p-2">Thời gian</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="p-2">DEF-001</td>
+                                                <td class="p-2">Hở mạch</td>
+                                                <td class="p-2"><span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs">NG</span></td>
+                                                <td class="p-2 text-sm">14:32:15</td>
+                                            </tr>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="p-2">DEF-002</td>
+                                                <td class="p-2">Thiếu linh kiện</td>
+                                                <td class="p-2"><span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs">NG</span></td>
+                                                <td class="p-2 text-sm">14:33:02</td>
+                                            </tr>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="p-2">DEF-003</td>
+                                                <td class="p-2">Nhiễu ảnh</td>
+                                                <td class="p-2"><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">OK</span></td>
+                                                <td class="p-2 text-sm">14:33:45</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ManualVRSview -->
+                <div id="ManualVRSview" class="view">
+                    <div class="flex flex-col lg:flex-row gap-6 w-full">
+                        <!-- Image Display Panel -->
+                        <div class="flex-grow bg-white p-4 rounded-lg shadow-md flex flex-col gap-4">
+                            <!-- Main Live Image -->
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="font-semibold">Ảnh Live từ VRS</h3>
+                                    <div class="flex items-center gap-2">
+                                        <button class="p-2 rounded-md hover:bg-gray-200"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+                                        <span>4 / 25</span>
+                                        <button class="p-2 rounded-md hover:bg-gray-200"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+                                    </div>
+                                </div>
+                                <div class="relative bg-black rounded-md aspect-video flex items-center justify-center">
+                                    <img src="https://placehold.co/800x450/000000/FFFFFF?text=Live+VRS+Image" alt="Live VRS Image" class="max-w-full max-h-full object-contain rounded-md">
+                                    <div class="absolute border-2 border-red-500" style="left: 30%; top: 50%; width: 25%; height: 15%;"></div>
+                                </div>
+                            </div>
+                            <!-- Gerber and AOI Images -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-semibold mb-2">Ảnh từ Thiết kế Gerber</h3>
+                                    <div class="relative bg-gray-700 rounded-md aspect-video flex items-center justify-center">
+                                        <img src="https://placehold.co/400x225/555555/FFFFFF?text=Gerber+View" alt="Gerber View" class="max-w-full max-h-full object-contain rounded-md">
+                                        <div class="absolute border-2 border-yellow-400" style="left: 30%; top: 50%; width: 25%; height: 15%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Ảnh từ PCI AOI</h3>
+                                    <div class="relative bg-gray-200 rounded-md aspect-video flex items-center justify-center">
+                                        <img src="https://placehold.co/400x225/dddddd/000000?text=AOI+Capture" alt="AOI Capture" class="max-w-full max-h-full object-contain rounded-md">
+                                        <div class="absolute border-2 border-blue-500" style="left: 30%; top: 50%; width: 25%; height: 15%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Info & Action Panel -->
+                        <div class="w-full lg:w-96 bg-white p-4 rounded-lg shadow-md flex flex-col flex-shrink-0">
+                             <h3 class="font-semibold text-lg mb-4 border-b pb-2">Phán định thủ công</h3>
+                             <div class="space-y-3 flex-grow">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Mã Lô (id_lot):</span>
+                                    <span class="font-semibold">LOT-C-789</span>
+                                </div>
+                                 <div class="flex justify-between">
+                                    <span class="text-gray-500">ID Bo (id_board):</span>
+                                    <span class="font-semibold">240715-008</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Loại lỗi AI dự đoán:</span>
+                                    <span class="font-semibold">Xước mạch</span>
+                                </div>
+                             </div>
+                             <div class="mt-4 pt-4 border-t space-y-2">
+                                <h4 class="text-sm font-semibold text-gray-600 text-center">Công cụ Hiệu chỉnh</h4>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button class="bg-cyan-500 text-white p-2 rounded-md hover:bg-cyan-600 flex items-center justify-center" data-view="BoardAlignView">
+                                        <i data-lucide="move-3d" class="w-5 h-5 mr-2"></i> Vị trí Bo
+                                    </button>
+                                    <button class="bg-amber-500 text-white p-2 rounded-md hover:bg-amber-600 flex items-center justify-center" data-view="LightAdjustView">
+                                        <i data-lucide="sun" class="w-5 h-5 mr-2"></i> Ánh sáng
+                                    </button>
+                                </div>
+                             </div>
+                             <div class="mt-4 pt-4 border-t grid grid-cols-2 gap-3">
+                                <button class="w-full bg-green-600 text-white p-3 rounded-md hover:bg-green-700 flex items-center justify-center text-lg">
+                                    <i data-lucide="check" class="w-6 h-6 mr-2"></i> OK
+                                </button>
+                                <button class="w-full bg-red-600 text-white p-3 rounded-md hover:bg-red-700 flex items-center justify-center text-lg">
+                                    <i data-lucide="x" class="w-6 h-6 mr-2"></i> NG
+                                </button>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LightAdjustView -->
+                <div id="LightAdjustView" class="view">
+                     <div class="flex flex-col lg:flex-row gap-6 w-full">
+                        <div class="flex-grow bg-white p-4 rounded-lg shadow-md">
+                             <h3 class="font-semibold mb-2">Xem trước hình ảnh</h3>
+                            <div class="relative bg-black rounded-md aspect-video flex items-center justify-center text-white">
+                                <i data-lucide="image" class="w-24 h-24 text-gray-600"></i>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-96 bg-white p-4 rounded-lg shadow-md">
+                             <h3 class="font-semibold text-lg mb-4 border-b pb-2">Điều chỉnh ánh sáng</h3>
+                             <div class="space-y-6">
+                                <div>
+                                    <label for="light1" class="flex justify-between text-sm"><span>Đèn vòm</span><span id="light1-val">50%</span></label>
+                                    <input id="light1" type="range" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer light-slider" value="50">
+                                </div>
+                                <div>
+                                    <label for="light2" class="flex justify-between text-sm"><span>Đèn đồng trục</span><span id="light2-val">75%</span></label>
+                                    <input id="light2" type="range" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer light-slider" value="75">
+                                </div>
+                                 <div>
+                                    <label for="light3" class="flex justify-between text-sm"><span>Đèn cạnh (Trái)</span><span id="light3-val">20%</span></label>
+                                    <input id="light3" type="range" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer light-slider" value="20">
+                                </div>
+                                 <div>
+                                    <label for="light4" class="flex justify-between text-sm"><span>Đèn cạnh (Phải)</span><span id="light4-val">20%</span></label>
+                                    <input id="light4" type="range" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer light-slider" value="20">
+                                </div>
+                             </div>
+                             <div class="mt-6 pt-4 border-t flex justify-end">
+                                <button class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 flex items-center" data-view="ManualVRSview">
+                                    <i data-lucide="check" class="w-5 h-5 mr-2"></i> Hoàn tất
+                                </button>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BoardAlignView -->
+                <div id="BoardAlignView" class="view flex-grow">
+                    <div class="w-full flex flex-col h-full">
+                        <div class="bg-white p-4 rounded-lg shadow-md mb-4 flex-shrink-0">
+                            <h2 id="align-instruction" class="text-xl font-semibold text-center text-blue-600">Bước 1: Chọn điểm A trên ảnh Camera</h2>
+                        </div>
+                        <div class="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0">
+                            <!-- Camera Panel -->
+                            <div class="bg-white p-4 rounded-lg shadow-md flex flex-col">
+                                <h3 class="font-semibold text-center mb-2">Ảnh từ Camera</h3>
+                                <div id="camera-panel" class="image-container flex-grow bg-black rounded">
+                                    <img src="https://placehold.co/600x400/333333/FFFFFF?text=Camera+Feed" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <!-- Design Panel -->
+                            <div class="bg-white p-4 rounded-lg shadow-md flex flex-col">
+                                <h3 class="font-semibold text-center mb-2">Ảnh từ File Thiết kế</h3>
+                                <div id="design-panel" class="image-container flex-grow bg-gray-700 rounded">
+                                    <img src="https://placehold.co/600x400/555555/FFFFFF?text=Design+File" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                        </div>
+                         <div class="bg-white p-4 rounded-lg shadow-md mt-4 flex justify-center items-center gap-4 flex-shrink-0">
+                            <button id="reset-align-btn" class="bg-yellow-500 text-white px-6 py-2 rounded-md hover:bg-yellow-600 flex items-center">
+                                <i data-lucide="rotate-cw" class="w-5 h-5 mr-2"></i> Làm lại
+                            </button>
+                            <button id="confirm-align-btn" class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 flex items-center disabled:bg-gray-400" disabled>
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> Xác nhận
+                            </button>
+                             <button class="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 flex items-center" data-view="ManualVRSview">
+                                <i data-lucide="x-circle" class="w-5 h-5 mr-2"></i> Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modal-container">
+        <!-- RequirePasswordView Modal -->
+        <div id="RequirePasswordView" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50">
+             <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm">
+                <div class="text-center">
+                    <i data-lucide="lock" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Yêu cầu xác thực</h2>
+                    <p class="text-gray-500 mb-6">Vui lòng nhập mật khẩu để tiếp tục.</p>
+                </div>
+                <form id="password-form">
+                    <input type="password" id="password-input" placeholder="Mật khẩu" class="w-full p-3 border rounded-md mb-2 text-center">
+                    <p id="password-error" class="text-red-500 text-sm mb-4 h-5"></p>
+                    <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 font-semibold">Xác nhận</button>
+                </form>
+            </div>
+        </div>
+        <!-- ConfirmView Modal -->
+        <div id="ConfirmView" class="fixed inset-0 bg-gray-800 bg-opacity-60 flex items-center justify-center z-50 hidden">
+            <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md text-center">
+                <i data-lucide="alert-triangle" class="w-16 h-16 text-yellow-500 mx-auto mb-4"></i>
+                <h2 class="text-xl font-bold text-gray-800 mb-2">Xác nhận lựa chọn</h2>
+                <p class="text-gray-600 mb-6">Bạn có chắc chắn muốn sử dụng bộ tham số này cho lô hàng tiếp theo không?</p>
+                <div class="flex justify-center space-x-4">
+                    <button id="cancel-confirm" class="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400">Hủy</button>
+                    <button id="accept-confirm" class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- App Logic ---
+            lucide.createIcons();
+
+            const views = document.querySelectorAll('.view');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const viewTitle = document.getElementById('view-title');
+            const sidebar = document.getElementById('sidebar');
+            const topBar = document.querySelector('header');
+            const passwordView = document.getElementById('RequirePasswordView');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const passwordError = document.getElementById('password-error');
+            const logoutButton = document.getElementById('logout-button');
+            const confirmViewModal = document.getElementById('ConfirmView');
+
+            let chartInstance = null;
+            const viewTitles = {
+                Homeview: 'Trang chủ',
+                SelectModelView: 'Cài đặt Model',
+                AddNewModelView: 'Cài đặt > Thêm mã hàng mới',
+                VRSmainView: 'Giám sát Auto VRS',
+                StatisticsView: 'Thống kê',
+                NG_rateView: 'Thống kê > Tỉ lệ phán định',
+                SelectLotView: 'Thống kê > Chọn lô hàng',
+                DefectTypeView: 'Thống kê > Chi tiết loại lỗi',
+                ManualVRSview: 'VRS Thủ công',
+                LightAdjustView: 'VRS Thủ công > Điều chỉnh ánh sáng',
+                BoardAlignView: 'VRS Thủ công > Hiệu chỉnh Vị trí Bo'
+            };
+
+            function switchView(viewId) {
+                views.forEach(view => view.classList.remove('active'));
+                const newView = document.getElementById(viewId);
+                if (newView) {
+                    newView.classList.add('active');
+                    viewTitle.textContent = viewTitles[viewId] || 'AutoVRS';
+                    
+                    navLinks.forEach(link => {
+                        link.classList.remove('bg-blue-600', 'font-semibold');
+                        const linkView = link.dataset.view;
+                        if (linkView === viewId) {
+                            link.classList.add('bg-blue-600', 'font-semibold');
+                        }
+                    });
+
+                    if (viewId === 'DefectTypeView') renderDefectTypeChart();
+                    if (viewId === 'BoardAlignView') resetAlignment();
+                    
+                    lucide.createIcons();
+                }
+            }
+
+            function handleLogin(event) {
+                event.preventDefault();
+                passwordError.textContent = '';
+                if (passwordInput.value === 'admin') {
+                    passwordView.style.display = 'none';
+                    sidebar.classList.remove('hidden');
+                    sidebar.classList.add('flex');
+                    topBar.style.display = 'flex';
+                    switchView('Homeview');
+                } else {
+                    passwordError.textContent = 'Mật khẩu không chính xác.';
+                }
+            }
+
+            function handleLogout() {
+                passwordView.style.display = 'flex';
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('flex');
+                topBar.style.display = 'none';
+                passwordInput.value = '';
+            }
+
+            document.body.addEventListener('click', function(e) {
+                const viewTarget = e.target.closest('[data-view]');
+                if (viewTarget) {
+                    e.preventDefault();
+                    switchView(viewTarget.dataset.view);
+                }
+
+                const confirmTarget = e.target.closest('.confirm-model-btn');
+                if (confirmTarget) {
+                    confirmViewModal.classList.remove('hidden');
+                }
+
+                if (e.target.id === 'cancel-confirm' || e.target.id === 'accept-confirm') {
+                    confirmViewModal.classList.add('hidden');
+                    if (e.target.id === 'accept-confirm') {
+                        // Add logic to apply model
+                        alert('Đã chọn Model thành công!');
+                    }
+                }
+            });
+
+            passwordForm.addEventListener('submit', handleLogin);
+            logoutButton.addEventListener('click', handleLogout);
+
+            // --- Board Alignment Logic ---
+            const cameraPanel = document.getElementById('camera-panel');
+            const designPanel = document.getElementById('design-panel');
+            const instructionEl = document.getElementById('align-instruction');
+            const confirmAlignBtn = document.getElementById('confirm-align-btn');
+            const resetAlignBtn = document.getElementById('reset-align-btn');
+
+            let alignState = { step: 1, points: { A: null, B: null, C: null, D: null } };
+            const instructions = {
+                1: "Bước 1: Chọn điểm A trên ảnh Camera",
+                2: "Bước 2: Chọn điểm B trên ảnh Camera",
+                3: "Bước 3: Chọn điểm C (tương ứng A) trên ảnh Thiết kế",
+                4: "Bước 4: Chọn điểm D (tương ứng B) trên ảnh Thiết kế",
+                5: "Hoàn tất! Nhấn 'Xác nhận' để lưu."
+            };
+
+            function updateInstruction() {
+                instructionEl.textContent = instructions[alignState.step];
+                confirmAlignBtn.disabled = alignState.step !== 5;
+                instructionEl.classList.toggle('text-green-600', alignState.step === 5);
+                instructionEl.classList.toggle('text-blue-600', alignState.step !== 5);
+            }
+            
+            function drawPoint(panel, point, label) {
+                const marker = document.createElement('div');
+                marker.className = 'point-marker';
+                marker.style.left = `${point.x}%`;
+                marker.style.top = `${point.y}%`;
+                marker.textContent = label;
+                marker.style.borderColor = (label === 'A' || label === 'B') ? '#3498db' : '#f1c40f';
+                marker.style.color = (label === 'A' || label === 'B') ? '#3498db' : '#f1c40f';
+                panel.appendChild(marker);
+            }
+
+            function handlePanelClick(e, panelType) {
+                if ((panelType === 'camera' && alignState.step > 2) || (panelType === 'design' && alignState.step < 3) || alignState.step > 4) return;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                const pointCoord = { x, y };
+                const pointLabel = Object.keys(alignState.points)[alignState.step - 1];
+                alignState.points[pointLabel] = pointCoord;
+                drawPoint(e.currentTarget, pointCoord, pointLabel);
+                alignState.step++;
+                updateInstruction();
+            }
+            
+            function resetAlignment() {
+                alignState = { step: 1, points: { A: null, B: null, C: null, D: null } };
+                cameraPanel.querySelectorAll('.point-marker').forEach(m => m.remove());
+                designPanel.querySelectorAll('.point-marker').forEach(m => m.remove());
+                updateInstruction();
+            }
+
+            cameraPanel.addEventListener('click', (e) => handlePanelClick(e, 'camera'));
+            designPanel.addEventListener('click', (e) => handlePanelClick(e, 'design'));
+            resetAlignBtn.addEventListener('click', resetAlignment);
+            confirmAlignBtn.addEventListener('click', () => {
+                alert('Đã xác nhận căn chỉnh!\n' + JSON.stringify(alignState.points, null, 2));
+                switchView('ManualVRSview');
+            });
+
+            // --- Light Adjust Logic ---
+            document.querySelectorAll('.light-slider').forEach(slider => {
+                slider.addEventListener('input', (e) => {
+                    const label = document.getElementById(`${e.target.id}-val`);
+                    if (label) {
+                        label.textContent = `${e.target.value}%`;
+                    }
+                });
+            });
+
+            // --- Chart Logic ---
+            function renderDefectTypeChart() {
+                const chartEl = document.getElementById('defectTypeChart');
+                if (!chartEl) return;
+                if (chartInstance) chartInstance.destroy();
+                chartInstance = new Chart(chartEl.getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['Hở mạch', 'Thiếu linh kiện', 'Lệch linh kiện', 'Nhiễu ảnh'],
+                        datasets: [{
+                            label: 'Số lượng lỗi',
+                            data: [12, 19, 3, 5],
+                            backgroundColor: ['#ef4444', '#3b82f6', '#f59e0b', '#10b981']
+                        }]
+                    },
+                    options: { responsive: true, plugins: { legend: { position: 'top' } } }
+                });
+            }
+
+            // --- Initial Setup ---
+            function updateTime() {
+                const now = new Date();
+                const timeEl = document.getElementById('current-time');
+                if (timeEl) {
+                    timeEl.textContent = `${now.toLocaleDateString('vi-VN')}, ${now.toLocaleTimeString('vi-VN')}`;
+                }
+            }
+            setInterval(updateTime, 1000);
+            updateTime();
+            
+            // Hide main app until login
+            sidebar.classList.add('hidden');
+            topBar.style.display = 'none';
+            passwordView.style.display = 'flex';
+        });
+    </script>
+</body>
+</html>
