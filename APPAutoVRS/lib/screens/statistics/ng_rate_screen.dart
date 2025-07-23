@@ -45,7 +45,7 @@ class NGRateScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: DataTable(
                     columnSpacing: 40,
-                    headingRowColor: MaterialStateProperty.all(
+                    headingRowColor: WidgetStateProperty.all(
                       Colors.grey.shade100,
                     ),
                     columns: const [

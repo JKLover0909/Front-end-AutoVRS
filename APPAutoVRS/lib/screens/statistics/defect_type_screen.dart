@@ -114,7 +114,7 @@ class DefectTypeScreen extends StatelessWidget {
                                     child: DataTable(
                                       columnSpacing: 20,
                                       headingRowColor:
-                                          MaterialStateProperty.all(
+                                          WidgetStateProperty.all(
                                             Colors.grey.shade100,
                                           ),
                                       columns: const [

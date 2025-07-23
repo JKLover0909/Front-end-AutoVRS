@@ -97,7 +97,7 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
                                 _getPointLabel(widget.step, entry.key),
                                 _getPointColor(widget.step),
                               );
-                            }).toList(),
+                            }),
                           ],
                         ),
                       ),
