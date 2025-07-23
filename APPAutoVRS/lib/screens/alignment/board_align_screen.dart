@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 class BoardAlignScreen extends StatefulWidget {
   final int step;
-  
+
   const BoardAlignScreen({super.key, required this.step});
 
   @override
@@ -19,7 +19,7 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
   Widget build(BuildContext context) {
     final stepTitles = {
       1: 'Bước 1/4: Chọn điểm A trên ảnh Camera',
-      2: 'Bước 2/4: Chọn điểm B trên ảnh Camera', 
+      2: 'Bước 2/4: Chọn điểm B trên ảnh Camera',
       3: 'Bước 3/4: Chọn điểm C (tương ứng A) trên ảnh Thiết kế',
       4: 'Bước 4/4: Chọn điểm D (tương ứng B) trên ảnh Thiết kế',
     };
@@ -55,9 +55,9 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Image Container
               Expanded(
                 child: Container(
@@ -86,10 +86,10 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
                                 ),
                               ),
                             ),
-                            
+
                             // Show previous points for reference
                             ..._buildPreviousPoints(),
-                            
+
                             // Show current selection
                             ..._selectedPoints.asMap().entries.map((entry) {
                               return _buildPointMarker(
@@ -105,9 +105,9 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Controls
               Row(
                 children: [
@@ -138,14 +138,15 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
                           min: 1.0,
                           max: 5.0,
                           divisions: 40,
-                          onChanged: (value) => setState(() => _zoomLevel = value),
+                          onChanged: (value) =>
+                              setState(() => _zoomLevel = value),
                         ),
                       ],
                     ),
                   ),
-                  
+
                   const SizedBox(width: 24),
-                  
+
                   // Action Buttons
                   Row(
                     children: [
@@ -157,11 +158,13 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
                         ),
                         child: const Text('Hủy'),
                       ),
-                      
+
                       if (widget.step == 4) ...[
                         const SizedBox(width: 16),
                         ElevatedButton(
-                          onPressed: _allPoints.length >= 4 ? _finishAlignment : null,
+                          onPressed: _allPoints.length >= 4
+                              ? _finishAlignment
+                              : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green.shade600,
                             foregroundColor: Colors.white,
@@ -182,7 +185,7 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
 
   List<Widget> _buildPreviousPoints() {
     List<Widget> points = [];
-    
+
     // Show previous step points for reference
     if (widget.step >= 2 && _allPoints.containsKey(1)) {
       points.add(_buildPointMarker(_allPoints[1]!, 'A', Colors.blue));
@@ -193,7 +196,7 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
     if (widget.step >= 4 && _allPoints.containsKey(3)) {
       points.add(_buildPointMarker(_allPoints[3]!, 'C', Colors.yellow));
     }
-    
+
     return points;
   }
 
@@ -225,11 +228,16 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
 
   String _getPointLabel(int step, int index) {
     switch (step) {
-      case 1: return 'A';
-      case 2: return 'B';
-      case 3: return 'C';
-      case 4: return 'D';
-      default: return '?';
+      case 1:
+        return 'A';
+      case 2:
+        return 'B';
+      case 3:
+        return 'C';
+      case 4:
+        return 'D';
+      default:
+        return '?';
     }
   }
 
@@ -239,7 +247,7 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
 
   void _onImageTap(TapDownDetails details) {
     final localPosition = details.localPosition;
-    
+
     // Only allow one point per step
     setState(() {
       _selectedPoints.clear();
@@ -261,7 +269,9 @@ class _BoardAlignScreenState extends State<BoardAlignScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Định vị hoàn tất'),
-        content: const Text('Đã xác nhận định vị thành công!\nCác điểm đã được lưu.'),
+        content: const Text(
+          'Đã xác nhận định vị thành công!\nCác điểm đã được lưu.',
+        ),
         actions: [
           ElevatedButton(
             onPressed: () {

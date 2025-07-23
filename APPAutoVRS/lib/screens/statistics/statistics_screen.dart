@@ -26,7 +26,8 @@ class StatisticsScreen extends StatelessWidget {
           _buildStatisticsCard(
             context,
             title: 'Thống kê loại lỗi',
-            description: 'Xem chi tiết số lượng và phân loại các lỗi trong một lô hàng cụ thể.',
+            description:
+                'Xem chi tiết số lượng và phân loại các lỗi trong một lô hàng cụ thể.',
             icon: FeatherIcons.list,
             color: Colors.teal.shade500,
             route: '/select-lot',
@@ -54,11 +55,7 @@ class StatisticsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                icon,
-                size: 48,
-                color: color,
-              ),
+              Icon(icon, size: 48, color: color),
               const SizedBox(height: 16),
               Text(
                 title,
@@ -72,10 +69,7 @@ class StatisticsScreen extends StatelessWidget {
               Expanded(
                 child: Text(
                   description,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ),
             ],

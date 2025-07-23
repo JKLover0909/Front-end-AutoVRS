@@ -36,19 +36,18 @@ class NGRateScreen extends StatelessWidget {
             children: [
               const Text(
                 'Thống kê tỉ lệ phán định',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               Expanded(
                 child: SingleChildScrollView(
                   child: DataTable(
                     columnSpacing: 40,
-                    headingRowColor: MaterialStateProperty.all(Colors.grey.shade100),
+                    headingRowColor: MaterialStateProperty.all(
+                      Colors.grey.shade100,
+                    ),
                     columns: const [
                       DataColumn(
                         label: Text(
@@ -75,25 +74,33 @@ class NGRateScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                    rows: _lotData.map((lot) => DataRow(
-                      cells: [
-                        DataCell(Text(
-                          lot.lotId,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        )),
-                        DataCell(Text(lot.boardCount.toString())),
-                        DataCell(
-                          Text(
-                            '${lot.ngRate}%',
-                            style: TextStyle(
-                              color: Colors.red.shade600,
-                              fontWeight: FontWeight.w600,
-                            ),
+                    rows: _lotData
+                        .map(
+                          (lot) => DataRow(
+                            cells: [
+                              DataCell(
+                                Text(
+                                  lot.lotId,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              DataCell(Text(lot.boardCount.toString())),
+                              DataCell(
+                                Text(
+                                  '${lot.ngRate}%',
+                                  style: TextStyle(
+                                    color: Colors.red.shade600,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              DataCell(Text('${lot.falsePositiveRate}%')),
+                            ],
                           ),
-                        ),
-                        DataCell(Text('${lot.falsePositiveRate}%')),
-                      ],
-                    )).toList(),
+                        )
+                        .toList(),
                   ),
                 ),
               ),

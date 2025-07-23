@@ -78,7 +78,7 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
                                 ],
                               ),
                             ),
-                            
+
                             // Lighting effect overlay
                             Container(
                               decoration: BoxDecoration(
@@ -102,9 +102,9 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
               ),
             ),
           ),
-          
+
           const SizedBox(width: 24),
-          
+
           // Light Control Panel
           SizedBox(
             width: 320,
@@ -121,9 +121,9 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    
+
                     const Divider(height: 24),
-                    
+
                     // Light controls
                     Expanded(
                       child: SingleChildScrollView(
@@ -136,9 +136,9 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
                               Colors.orange,
                               (value) => setState(() => _domeLight = value),
                             ),
-                            
+
                             const SizedBox(height: 24),
-                            
+
                             _buildLightControl(
                               'Đèn vòng',
                               _ringLight,
@@ -146,9 +146,9 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
                               Colors.blue,
                               (value) => setState(() => _ringLight = value),
                             ),
-                            
+
                             const SizedBox(height: 24),
-                            
+
                             _buildLightControl(
                               'Đèn nền',
                               _backLight,
@@ -156,9 +156,9 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
                               Colors.green,
                               (value) => setState(() => _backLight = value),
                             ),
-                            
+
                             const SizedBox(height: 24),
-                            
+
                             _buildLightControl(
                               'Đèn bên',
                               _sideLight,
@@ -166,9 +166,9 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
                               Colors.purple,
                               (value) => setState(() => _sideLight = value),
                             ),
-                            
+
                             const SizedBox(height: 32),
-                            
+
                             // Preset buttons
                             const Text(
                               'Cài đặt sẵn',
@@ -177,9 +177,9 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            
+
                             const SizedBox(height: 12),
-                            
+
                             Row(
                               children: [
                                 Expanded(
@@ -205,7 +205,7 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
                                 ),
                               ],
                             ),
-                            
+
                             Row(
                               children: [
                                 Expanded(
@@ -235,9 +235,9 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Action buttons
                     Row(
                       children: [
@@ -281,18 +281,12 @@ class _LightAdjustScreenState extends State<LightAdjustScreen> {
             const SizedBox(width: 8),
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             ),
             const Spacer(),
             Text(
               '${value.round()}%',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
           ],
         ),

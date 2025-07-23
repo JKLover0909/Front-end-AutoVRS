@@ -8,13 +8,13 @@ class VRSProvider extends ChangeNotifier {
   int _totalCount = 0;
   int _okCount = 0;
   int _ngCount = 0;
-  
+
   // Camera and alignment settings
   double _magnification = 1.0;
   double _lightLevel = 50.0;
   final List<Map<String, dynamic>> _alignmentPoints = [];
   int _currentAlignmentStep = 1;
-  
+
   // Getters
   String get systemStatus => _systemStatus;
   bool get isAutoMode => _isAutoMode;
@@ -25,7 +25,8 @@ class VRSProvider extends ChangeNotifier {
   double get ngRate => _totalCount > 0 ? (_ngCount / _totalCount) * 100 : 0.0;
   double get magnification => _magnification;
   double get lightLevel => _lightLevel;
-  List<Map<String, dynamic>> get alignmentPoints => List.unmodifiable(_alignmentPoints);
+  List<Map<String, dynamic>> get alignmentPoints =>
+      List.unmodifiable(_alignmentPoints);
   int get currentAlignmentStep => _currentAlignmentStep;
 
   void setSystemStatus(String status) {

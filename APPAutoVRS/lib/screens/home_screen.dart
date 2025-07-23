@@ -16,19 +16,19 @@ class HomeScreen extends StatelessWidget {
         children: [
           // Welcome Section
           _buildWelcomeSection(context),
-          
+
           const SizedBox(height: 24),
-          
+
           // System Status Cards
           _buildSystemStatusCards(context),
-          
+
           const SizedBox(height: 24),
-          
+
           // Quick Actions
           _buildQuickActions(context),
-          
+
           const SizedBox(height: 24),
-          
+
           // Recent Activity
           _buildRecentActivity(context),
         ],
@@ -97,10 +97,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   const Text(
                     '⚠️ Vui lòng đăng nhập để sử dụng đầy đủ chức năng của hệ thống',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ],
               ],
@@ -140,7 +137,9 @@ class HomeScreen extends StatelessWidget {
               child: _buildStatusCard(
                 context,
                 'Model hiện tại',
-                vrsProvider.currentModel.isEmpty ? 'Chưa chọn' : vrsProvider.currentModel,
+                vrsProvider.currentModel.isEmpty
+                    ? 'Chưa chọn'
+                    : vrsProvider.currentModel,
                 vrsProvider.currentModel.isEmpty ? Colors.grey : Colors.green,
                 FeatherIcons.package,
               ),
@@ -200,16 +199,13 @@ class HomeScreen extends StatelessWidget {
     return Consumer<AuthProvider>(
       builder: (context, authProvider, _) {
         final actions = _getQuickActions(authProvider);
-        
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Thao tác nhanh',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
             GridView.count(
@@ -219,7 +215,9 @@ class HomeScreen extends StatelessWidget {
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
               childAspectRatio: 1.2,
-              children: actions.map((action) => _buildActionCard(context, action)).toList(),
+              children: actions
+                  .map((action) => _buildActionCard(context, action))
+                  .toList(),
             ),
           ],
         );
@@ -308,10 +306,7 @@ class HomeScreen extends StatelessWidget {
       children: [
         const Text(
           'Hoạt động gần đây',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 16),
         Card(
@@ -347,7 +342,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActivityItem(String title, String time, IconData icon, Color color) {
+  Widget _buildActivityItem(
+    String title,
+    String time,
+    IconData icon,
+    Color color,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -374,10 +374,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Text(
                   time,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
                 ),
               ],
             ),

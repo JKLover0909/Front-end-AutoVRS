@@ -78,9 +78,9 @@ class VRSMainScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Comparison Images
                 Expanded(
                   flex: 1,
@@ -143,9 +143,9 @@ class VRSMainScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      
+
                       const SizedBox(width: 16),
-                      
+
                       // AOI Capture
                       Expanded(
                         child: Card(
@@ -209,9 +209,9 @@ class VRSMainScreen extends StatelessWidget {
               ],
             ),
           ),
-          
+
           const SizedBox(width: 24),
-          
+
           // Info Panel
           SizedBox(
             width: 320,
@@ -228,28 +228,25 @@ class VRSMainScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    
+
                     const Divider(height: 24),
-                    
+
                     // Info rows
                     _buildInfoRow('Mã Lô (id_lot):', 'LOT-A-452'),
                     const SizedBox(height: 12),
                     _buildInfoRow('Loại lỗi:', 'Hở mạch'),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // AI Result
                     const Text(
                       'Kết quả phán định AI',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     const SizedBox(height: 12),
-                    
+
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
@@ -267,9 +264,9 @@ class VRSMainScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Statistics Button
                     Consumer<AuthProvider>(
                       builder: (context, authProvider, _) {
@@ -304,19 +301,10 @@ class VRSMainScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.grey,
-            fontSize: 14,
-          ),
-        ),
+        Text(label, style: const TextStyle(color: Colors.grey, fontSize: 14)),
         Text(
           value,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
         ),
       ],
     );

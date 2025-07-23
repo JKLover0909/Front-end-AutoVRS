@@ -25,15 +25,16 @@ class AppTheme {
           color: Colors.white,
         ),
       ),
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: primaryBlue,
-        brightness: Brightness.light,
-      ).copyWith(
-        primary: primaryBlue,
-        secondary: primaryGray,
-        error: errorRed,
-        surface: Colors.white,
-      ),
+      colorScheme:
+          ColorScheme.fromSeed(
+            seedColor: primaryBlue,
+            brightness: Brightness.light,
+          ).copyWith(
+            primary: primaryBlue,
+            secondary: primaryGray,
+            error: errorRed,
+            surface: Colors.white,
+          ),
       cardTheme: const CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -46,18 +47,14 @@ class AppTheme {
           backgroundColor: primaryBlue,
           foregroundColor: Colors.white,
           elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: primaryBlue,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -75,7 +72,10 @@ class AppTheme {
         ),
         filled: true,
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
       ),
       navigationRailTheme: const NavigationRailThemeData(
         backgroundColor: Colors.white,
@@ -95,14 +95,8 @@ class AppTheme {
           fontWeight: FontWeight.w600,
           color: Colors.black87,
         ),
-        bodyLarge: TextStyle(
-          fontSize: 16,
-          color: Colors.black87,
-        ),
-        bodyMedium: TextStyle(
-          fontSize: 14,
-          color: Colors.black87,
-        ),
+        bodyLarge: TextStyle(fontSize: 16, color: Colors.black87),
+        bodyMedium: TextStyle(fontSize: 14, color: Colors.black87),
         labelLarge: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,

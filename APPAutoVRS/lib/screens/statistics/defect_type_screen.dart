@@ -31,14 +31,11 @@ class DefectTypeScreen extends StatelessWidget {
             children: [
               const Text(
                 'Thống kê loại lỗi cho Lô: LOT-A-452',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               Expanded(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,11 +63,19 @@ class DefectTypeScreen extends StatelessWidget {
                                   child: PieChart(
                                     PieChartData(
                                       sections: _defectData.map((data) {
-                                        final percentage = (data.count / _defectData.fold<int>(0, (sum, item) => sum + item.count)) * 100;
+                                        final percentage =
+                                            (data.count /
+                                                _defectData.fold<int>(
+                                                  0,
+                                                  (sum, item) =>
+                                                      sum + item.count,
+                                                )) *
+                                            100;
                                         return PieChartSectionData(
                                           color: data.color,
                                           value: data.count.toDouble(),
-                                          title: '${percentage.toStringAsFixed(1)}%',
+                                          title:
+                                              '${percentage.toStringAsFixed(1)}%',
                                           radius: 60,
                                           titleStyle: const TextStyle(
                                             fontSize: 12,
@@ -87,9 +92,9 @@ class DefectTypeScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          
+
                           const SizedBox(height: 24),
-                          
+
                           // Summary Table
                           Expanded(
                             flex: 1,
@@ -108,55 +113,73 @@ class DefectTypeScreen extends StatelessWidget {
                                   child: SingleChildScrollView(
                                     child: DataTable(
                                       columnSpacing: 20,
-                                      headingRowColor: MaterialStateProperty.all(Colors.grey.shade100),
+                                      headingRowColor:
+                                          MaterialStateProperty.all(
+                                            Colors.grey.shade100,
+                                          ),
                                       columns: const [
                                         DataColumn(
                                           label: Text(
                                             'Loại lỗi',
-                                            style: TextStyle(fontWeight: FontWeight.w600),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                         DataColumn(
                                           label: Text(
                                             'Số lượng',
-                                            style: TextStyle(fontWeight: FontWeight.w600),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                       ],
-                                      rows: _defectData.map((data) => DataRow(
-                                        cells: [
-                                          DataCell(
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  width: 16,
-                                                  height: 16,
-                                                  decoration: BoxDecoration(
-                                                    color: data.color,
-                                                    borderRadius: BorderRadius.circular(2),
+                                      rows: _defectData
+                                          .map(
+                                            (data) => DataRow(
+                                              cells: [
+                                                DataCell(
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        width: 16,
+                                                        height: 16,
+                                                        decoration: BoxDecoration(
+                                                          color: data.color,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                2,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      Expanded(
+                                                        child: Text(
+                                                          data.type,
+                                                          style:
+                                                              const TextStyle(
+                                                                fontSize: 12,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                                const SizedBox(width: 8),
-                                                Expanded(
-                                                  child: Text(
-                                                    data.type,
-                                                    style: const TextStyle(fontSize: 12),
+                                                DataCell(
+                                                  Text(
+                                                    data.count.toString(),
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 12,
+                                                    ),
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                          DataCell(
-                                            Text(
-                                              data.count.toString(),
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )).toList(),
+                                          )
+                                          .toList(),
                                     ),
                                   ),
                                 ),
@@ -166,9 +189,9 @@ class DefectTypeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(width: 24),
-                    
+
                     // Right side - Details List
                     Expanded(
                       flex: 2,
@@ -207,21 +230,27 @@ class DefectTypeScreen extends StatelessWidget {
                                           flex: 1,
                                           child: Text(
                                             'ID Bất thường',
-                                            style: TextStyle(fontWeight: FontWeight.w600),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                         Expanded(
                                           flex: 2,
                                           child: Text(
                                             'Loại lỗi',
-                                            style: TextStyle(fontWeight: FontWeight.w600),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                         Expanded(
                                           flex: 1,
                                           child: Text(
                                             'Phán định',
-                                            style: TextStyle(fontWeight: FontWeight.w600),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -256,24 +285,34 @@ class DefectTypeScreen extends StatelessWidget {
                                               Expanded(
                                                 flex: 1,
                                                 child: Container(
-                                                  padding: const EdgeInsets.symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 4,
-                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 4,
+                                                      ),
                                                   decoration: BoxDecoration(
-                                                    color: detail.judgment == 'NG' 
-                                                        ? Colors.red.shade100 
+                                                    color:
+                                                        detail.judgment == 'NG'
+                                                        ? Colors.red.shade100
                                                         : Colors.green.shade100,
-                                                    borderRadius: BorderRadius.circular(12),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
                                                   ),
                                                   child: Text(
                                                     detail.judgment,
                                                     style: TextStyle(
-                                                      color: detail.judgment == 'NG' 
-                                                          ? Colors.red.shade700 
-                                                          : Colors.green.shade700,
+                                                      color:
+                                                          detail.judgment ==
+                                                              'NG'
+                                                          ? Colors.red.shade700
+                                                          : Colors
+                                                                .green
+                                                                .shade700,
                                                       fontSize: 12,
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
                                                     textAlign: TextAlign.center,
                                                   ),

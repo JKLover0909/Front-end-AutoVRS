@@ -26,19 +26,17 @@ class SelectLotScreen extends StatelessWidget {
               children: [
                 const Text(
                   'Chọn lô hàng để xem thống kê lỗi',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 Flexible(
                   child: ListView.separated(
                     shrinkWrap: true,
                     itemCount: _lots.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 8),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final lot = _lots[index];
                       return Card(
@@ -46,9 +44,7 @@ class SelectLotScreen extends StatelessWidget {
                         child: ListTile(
                           title: Text(
                             lot,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () => context.push('/defect-type'),

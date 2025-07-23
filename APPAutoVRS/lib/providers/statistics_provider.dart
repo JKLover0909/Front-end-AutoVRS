@@ -13,15 +13,16 @@ class StatisticsProvider extends ChangeNotifier {
   final List<Map<String, dynamic>> _hourlyData = [];
   String _selectedLot = '';
   DateTime _selectedDate = DateTime.now();
-  
+
   // Getters
   Map<String, int> get defectData => Map.unmodifiable(_defectData);
   List<Map<String, dynamic>> get hourlyData => List.unmodifiable(_hourlyData);
   String get selectedLot => _selectedLot;
   DateTime get selectedDate => _selectedDate;
-  
-  int get totalDefects => _defectData.values.fold(0, (sum, value) => sum + value);
-  
+
+  int get totalDefects =>
+      _defectData.values.fold(0, (sum, value) => sum + value);
+
   double get defectPercentage {
     const totalInspected = 1000; // Mock total
     return totalDefects > 0 ? (totalDefects / totalInspected) * 100 : 0.0;
@@ -64,11 +65,15 @@ class StatisticsProvider extends ChangeNotifier {
 
   // Chart data helpers
   List<Map<String, dynamic>> getDefectChartData() {
-    return _defectData.entries.map((entry) => {
-      'label': entry.key,
-      'value': entry.value,
-      'color': _getDefectColor(entry.key),
-    }).toList();
+    return _defectData.entries
+        .map(
+          (entry) => {
+            'label': entry.key,
+            'value': entry.value,
+            'color': _getDefectColor(entry.key),
+          },
+        )
+        .toList();
   }
 
   int _getDefectColor(String defectType) {

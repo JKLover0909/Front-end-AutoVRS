@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 class NavigationProvider extends ChangeNotifier {
   final List<String> _viewHistory = ['home'];
   String _currentView = 'home';
-  
+
   String get currentView => _currentView;
   List<String> get viewHistory => List.unmodifiable(_viewHistory);
   bool get canGoBack => _viewHistory.length > 1;

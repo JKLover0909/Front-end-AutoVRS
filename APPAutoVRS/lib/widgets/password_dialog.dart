@@ -42,7 +42,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
 
     try {
       final success = await widget.onAuthenticated(_passwordController.text);
-      
+
       if (mounted) {
         if (success) {
           // Chỉ pop dialog, không làm gì khác
@@ -69,9 +69,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         width: 400,
         padding: const EdgeInsets.all(24),
@@ -104,9 +102,9 @@ class _PasswordDialogState extends State<PasswordDialog> {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Password Input
             TextField(
               controller: _passwordController,
@@ -129,15 +127,17 @@ class _PasswordDialogState extends State<PasswordDialog> {
               ),
               onSubmitted: (_) => _handleSubmit(),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
+                  onPressed: _isLoading
+                      ? null
+                      : () => Navigator.of(context).pop(),
                   child: const Text('Hủy'),
                 ),
                 const SizedBox(width: 12),
@@ -149,7 +149,9 @@ class _PasswordDialogState extends State<PasswordDialog> {
                           height: 16,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
                           ),
                         )
                       : const Text('Đăng nhập'),

@@ -48,13 +48,17 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
                               Row(
                                 children: [
                                   IconButton(
-                                    onPressed: _currentBoard > 1 ? _previousBoard : null,
+                                    onPressed: _currentBoard > 1
+                                        ? _previousBoard
+                                        : null,
                                     icon: const Icon(FeatherIcons.arrowLeft),
                                     tooltip: 'Bo trước',
                                   ),
                                   Text('$_currentBoard / $_totalBoards'),
                                   IconButton(
-                                    onPressed: _currentBoard < _totalBoards ? _nextBoard : null,
+                                    onPressed: _currentBoard < _totalBoards
+                                        ? _nextBoard
+                                        : null,
                                     icon: const Icon(FeatherIcons.arrowRight),
                                     tooltip: 'Bo tiếp theo',
                                   ),
@@ -105,9 +109,9 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Comparison Images
                 Expanded(
                   flex: 1,
@@ -170,9 +174,9 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
                           ),
                         ),
                       ),
-                      
+
                       const SizedBox(width: 16),
-                      
+
                       // AOI Capture
                       Expanded(
                         child: Card(
@@ -236,9 +240,9 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
               ],
             ),
           ),
-          
+
           const SizedBox(width: 24),
-          
+
           // Info & Action Panel
           SizedBox(
             width: 320,
@@ -255,18 +259,18 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    
+
                     const Divider(height: 24),
-                    
+
                     // Info rows
                     _buildInfoRow('Mã Lô:', 'LOT-C-789'),
                     const SizedBox(height: 12),
                     _buildInfoRow('Số thứ tự bo (Id_board):', '240715-008'),
                     const SizedBox(height: 12),
                     _buildInfoRow('Loại lỗi AI dự đoán:', 'Xước mạch'),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Magnification Slider
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -293,13 +297,14 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
                           min: 30,
                           max: 250,
                           divisions: 220,
-                          onChanged: (value) => setState(() => _magnification = value),
+                          onChanged: (value) =>
+                              setState(() => _magnification = value),
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Tools Section
                     const Text(
                       'Công cụ Định vị',
@@ -310,9 +315,9 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     const SizedBox(height: 12),
-                    
+
                     Row(
                       children: [
                         Expanded(
@@ -342,9 +347,9 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Judgment Buttons
                     Row(
                       children: [
@@ -352,7 +357,10 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
                           child: ElevatedButton.icon(
                             onPressed: () => _makeJudgment(true),
                             icon: const Icon(FeatherIcons.check, size: 20),
-                            label: const Text('OK', style: TextStyle(fontSize: 16)),
+                            label: const Text(
+                              'OK',
+                              style: TextStyle(fontSize: 16),
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green.shade600,
                               foregroundColor: Colors.white,
@@ -365,7 +373,10 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
                           child: ElevatedButton.icon(
                             onPressed: () => _makeJudgment(false),
                             icon: const Icon(FeatherIcons.x, size: 20),
-                            label: const Text('NG', style: TextStyle(fontSize: 16)),
+                            label: const Text(
+                              'NG',
+                              style: TextStyle(fontSize: 16),
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red.shade600,
                               foregroundColor: Colors.white,
@@ -393,20 +404,14 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
           flex: 2,
           child: Text(
             label,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 14,
-            ),
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
           ),
         ),
         Expanded(
           flex: 1,
           child: Text(
             value,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
           ),
         ),
       ],
@@ -433,7 +438,7 @@ class _ManualVRSScreenState extends State<ManualVRSScreen> {
         backgroundColor: isOK ? Colors.green : Colors.red,
       ),
     );
-    
+
     // Auto move to next board
     if (_currentBoard < _totalBoards) {
       Future.delayed(const Duration(milliseconds: 1500), () {

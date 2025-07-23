@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 class AuthProvider extends ChangeNotifier {
   bool _isWorkerAuthenticated = false;
   bool _isAdminAuthenticated = false;
-  
+
   bool get isWorkerAuthenticated => _isWorkerAuthenticated;
   bool get isAdminAuthenticated => _isAdminAuthenticated;
   bool get hasAnyAuth => _isWorkerAuthenticated || _isAdminAuthenticated;

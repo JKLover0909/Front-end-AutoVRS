@@ -12,10 +12,10 @@ import 'providers/statistics_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Hive
   await Hive.initFlutter();
-  
+
   runApp(const AutoVRSApp());
 }
 

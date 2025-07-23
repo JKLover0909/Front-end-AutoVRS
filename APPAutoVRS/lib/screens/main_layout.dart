@@ -19,14 +19,14 @@ class MainLayout extends StatelessWidget {
         children: [
           // Sidebar Navigation
           const SidebarNavigation(),
-          
+
           // Main Content Area
           Expanded(
             child: Column(
               children: [
                 // Top Bar
                 _buildTopBar(context),
-                
+
                 // Content
                 Expanded(
                   child: Container(
@@ -70,12 +70,12 @@ class MainLayout extends StatelessWidget {
                     color: Colors.white,
                     tooltip: 'Quay lại',
                   ),
-                
+
                 // Title
                 Expanded(
                   child: Text(
                     navigationProvider.getViewTitle(
-                      GoRouterState.of(context).name ?? 'home'
+                      GoRouterState.of(context).name ?? 'home',
                     ),
                     style: const TextStyle(
                       color: Colors.white,
@@ -84,12 +84,12 @@ class MainLayout extends StatelessWidget {
                     ),
                   ),
                 ),
-                
+
                 // Current Time
                 _buildCurrentTime(),
-                
+
                 const SizedBox(width: 16),
-                
+
                 // User Menu
                 _buildUserMenu(context),
               ],
@@ -102,16 +102,16 @@ class MainLayout extends StatelessWidget {
 
   Widget _buildCurrentTime() {
     return StreamBuilder<DateTime>(
-      stream: Stream.periodic(const Duration(seconds: 1), (_) => DateTime.now()),
+      stream: Stream.periodic(
+        const Duration(seconds: 1),
+        (_) => DateTime.now(),
+      ),
       builder: (context, snapshot) {
         final now = snapshot.data ?? DateTime.now();
         return Text(
           '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year} '
           '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}',
-          style: const TextStyle(
-            color: Colors.white70,
-            fontSize: 14,
-          ),
+          style: const TextStyle(color: Colors.white70, fontSize: 14),
         );
       },
     );
@@ -163,16 +163,14 @@ class MainLayout extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(
-                      authProvider.isAdminAuthenticated 
-                        ? FeatherIcons.shield 
-                        : FeatherIcons.user,
+                      authProvider.isAdminAuthenticated
+                          ? FeatherIcons.shield
+                          : FeatherIcons.user,
                       color: Colors.green,
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      authProvider.isAdminAuthenticated 
-                        ? 'Admin' 
-                        : 'Worker',
+                      authProvider.isAdminAuthenticated ? 'Admin' : 'Worker',
                       style: const TextStyle(color: Colors.green),
                     ),
                   ],
@@ -204,13 +202,13 @@ class MainLayout extends StatelessWidget {
         onAuthenticated: (password) async {
           final authProvider = context.read<AuthProvider>();
           bool success = false;
-          
+
           if (role == 'admin') {
             success = await authProvider.authenticateAdmin(password);
           } else {
             success = await authProvider.authenticateWorker(password);
           }
-          
+
           return success;
         },
       ),

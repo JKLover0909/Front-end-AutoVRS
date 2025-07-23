@@ -25,12 +25,10 @@ class SidebarNavigation extends StatelessWidget {
         children: [
           // Logo/Header
           _buildHeader(),
-          
+
           // Navigation Menu
-          Expanded(
-            child: _buildNavigationMenu(context),
-          ),
-          
+          Expanded(child: _buildNavigationMenu(context)),
+
           // Footer
           _buildFooter(),
         ],
@@ -42,16 +40,10 @@ class SidebarNavigation extends StatelessWidget {
     return Container(
       height: 80,
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: Color(0xFF1E40AF),
-      ),
+      decoration: const BoxDecoration(color: Color(0xFF1E40AF)),
       child: const Row(
         children: [
-          Icon(
-            FeatherIcons.monitor,
-            color: Colors.white,
-            size: 32,
-          ),
+          Icon(FeatherIcons.monitor, color: Colors.white, size: 32),
           SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -73,10 +65,12 @@ class SidebarNavigation extends StatelessWidget {
     return Consumer<AuthProvider>(
       builder: (context, authProvider, _) {
         final menuItems = _getMenuItems(authProvider);
-        
+
         return ListView(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          children: menuItems.map((item) => _buildMenuItem(context, item)).toList(),
+          children: menuItems
+              .map((item) => _buildMenuItem(context, item))
+              .toList(),
         );
       },
     );
@@ -120,28 +114,36 @@ class SidebarNavigation extends StatelessWidget {
   Widget _buildMenuItem(BuildContext context, NavigationItem item) {
     return Consumer<AuthProvider>(
       builder: (context, authProvider, _) {
-        final isAccessible = item.requiredAuth == null || 
-                            authProvider.canAccessFeature(item.requiredAuth!);
-        
+        final isAccessible =
+            item.requiredAuth == null ||
+            authProvider.canAccessFeature(item.requiredAuth!);
+
         final currentRoute = GoRouterState.of(context).uri.path;
         final isSelected = currentRoute == item.route;
-        
+
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           child: Material(
-            color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.1) : Colors.transparent,
+            color: isSelected
+                ? Theme.of(context).primaryColor.withOpacity(0.1)
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
             child: InkWell(
               borderRadius: BorderRadius.circular(8),
               onTap: isAccessible ? () => context.go(item.route) : null,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 child: Row(
                   children: [
                     Icon(
                       item.icon,
                       color: isAccessible
-                          ? (isSelected ? Theme.of(context).primaryColor : Colors.grey[600])
+                          ? (isSelected
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey[600])
                           : Colors.grey[400],
                       size: 20,
                     ),
@@ -151,9 +153,13 @@ class SidebarNavigation extends StatelessWidget {
                         item.title,
                         style: TextStyle(
                           color: isAccessible
-                              ? (isSelected ? Theme.of(context).primaryColor : Colors.grey[800])
+                              ? (isSelected
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.grey[800])
                               : Colors.grey[400],
-                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.normal,
                           fontSize: 14,
                         ),
                       ),
@@ -178,26 +184,18 @@ class SidebarNavigation extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Colors.grey[300]!),
-        ),
+        border: Border(top: BorderSide(color: Colors.grey[300]!)),
       ),
       child: const Column(
         children: [
           Text(
             'AutoVRS v1.0.0',
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 12,
-            ),
+            style: TextStyle(color: Colors.grey, fontSize: 12),
           ),
           SizedBox(height: 4),
           Text(
             '© 2025 Meiko Automation',
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 10,
-            ),
+            style: TextStyle(color: Colors.grey, fontSize: 10),
           ),
         ],
       ),

@@ -14,7 +14,7 @@ class _AddModelScreenState extends State<AddModelScreen> {
   final _modelIdController = TextEditingController();
   final _lineSizeController = TextEditingController();
   final _spaceSizeController = TextEditingController();
-  
+
   String? _selectedFile;
 
   @override
@@ -33,14 +33,11 @@ class _AddModelScreenState extends State<AddModelScreen> {
                 children: [
                   const Text(
                     'Thêm mã hàng mới',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
-                  
+
                   const SizedBox(height: 32),
-                  
+
                   // Model ID
                   TextFormField(
                     controller: _modelIdController,
@@ -55,9 +52,9 @@ class _AddModelScreenState extends State<AddModelScreen> {
                       return null;
                     },
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Line Size
                   TextFormField(
                     controller: _lineSizeController,
@@ -65,7 +62,9 @@ class _AddModelScreenState extends State<AddModelScreen> {
                       labelText: 'Kích thước đường mạch (line_size)',
                       border: OutlineInputBorder(),
                     ),
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Vui lòng nhập kích thước đường mạch';
@@ -76,9 +75,9 @@ class _AddModelScreenState extends State<AddModelScreen> {
                       return null;
                     },
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Space Size
                   TextFormField(
                     controller: _spaceSizeController,
@@ -86,7 +85,9 @@ class _AddModelScreenState extends State<AddModelScreen> {
                       labelText: 'Kích thước khoảng trống (space_size)',
                       border: OutlineInputBorder(),
                     ),
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Vui lòng nhập kích thước khoảng trống';
@@ -97,9 +98,9 @@ class _AddModelScreenState extends State<AddModelScreen> {
                       return null;
                     },
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // File Upload
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,12 +138,12 @@ class _AddModelScreenState extends State<AddModelScreen> {
                               Text(
                                 _selectedFile ?? 'Tải tệp lên hoặc kéo và thả',
                                 style: TextStyle(
-                                  color: _selectedFile != null 
-                                    ? Colors.blue.shade600 
-                                    : Colors.grey.shade600,
-                                  fontWeight: _selectedFile != null 
-                                    ? FontWeight.w500 
-                                    : FontWeight.normal,
+                                  color: _selectedFile != null
+                                      ? Colors.blue.shade600
+                                      : Colors.grey.shade600,
+                                  fontWeight: _selectedFile != null
+                                      ? FontWeight.w500
+                                      : FontWeight.normal,
                                 ),
                               ),
                               if (_selectedFile == null) ...[
@@ -161,9 +162,9 @@ class _AddModelScreenState extends State<AddModelScreen> {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 32),
-                  
+
                   // Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -172,7 +173,7 @@ class _AddModelScreenState extends State<AddModelScreen> {
                         onPressed: () => context.pop(),
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 24, 
+                            horizontal: 24,
                             vertical: 12,
                           ),
                         ),
@@ -185,7 +186,7 @@ class _AddModelScreenState extends State<AddModelScreen> {
                           backgroundColor: Colors.blue.shade600,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 24, 
+                            horizontal: 24,
                             vertical: 12,
                           ),
                         ),
@@ -207,7 +208,7 @@ class _AddModelScreenState extends State<AddModelScreen> {
     setState(() {
       _selectedFile = 'example_gerber_file.gbr';
     });
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Chức năng tải file sẽ được triển khai sau'),
@@ -225,7 +226,7 @@ class _AddModelScreenState extends State<AddModelScreen> {
           backgroundColor: Colors.green,
         ),
       );
-      
+
       // Navigate back
       context.pop();
     }

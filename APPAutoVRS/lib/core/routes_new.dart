@@ -24,7 +24,8 @@ class AppRoutes {
       GoRoute(
         path: '/select-model',
         name: 'select_model',
-        builder: (context, state) => const MainLayout(child: SelectModelScreen()),
+        builder: (context, state) =>
+            const MainLayout(child: SelectModelScreen()),
       ),
       GoRoute(
         path: '/add-model',
@@ -44,7 +45,8 @@ class AppRoutes {
       GoRoute(
         path: '/light-adjust',
         name: 'light_adjust',
-        builder: (context, state) => const MainLayout(child: LightAdjustScreen()),
+        builder: (context, state) =>
+            const MainLayout(child: LightAdjustScreen()),
       ),
       GoRoute(
         path: '/board-align/:step',
@@ -57,7 +59,8 @@ class AppRoutes {
       GoRoute(
         path: '/statistics',
         name: 'statistics',
-        builder: (context, state) => const MainLayout(child: StatisticsScreen()),
+        builder: (context, state) =>
+            const MainLayout(child: StatisticsScreen()),
       ),
       GoRoute(
         path: '/ng-rate',
@@ -72,7 +75,8 @@ class AppRoutes {
       GoRoute(
         path: '/defect-type',
         name: 'defect_type',
-        builder: (context, state) => const MainLayout(child: DefectTypeScreen()),
+        builder: (context, state) =>
+            const MainLayout(child: DefectTypeScreen()),
       ),
     ],
   );
