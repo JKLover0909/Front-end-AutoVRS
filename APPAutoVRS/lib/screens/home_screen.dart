@@ -5,33 +5,53 @@ import 'package:go_router/go_router.dart';
 import '../providers/vrs_provider.dart';
 import '../providers/auth_provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch system status when screen loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VRSProvider>().fetchSystemStatus();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Welcome Section
-          _buildWelcomeSection(context),
+    return RefreshIndicator(
+      onRefresh: () async {
+        await context.read<VRSProvider>().refreshSystemData();
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Welcome Section
+            _buildWelcomeSection(context),
 
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-          // System Status Cards
-          _buildSystemStatusCards(context),
+            // System Status Cards
+            _buildSystemStatusCards(context),
 
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-          // Quick Actions
-          _buildQuickActions(context),
+            // Quick Actions
+            _buildQuickActions(context),
 
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-          // Recent Activity
-          _buildRecentActivity(context),
-        ],
+            // Recent Activity
+            _buildRecentActivity(context),
+          ],
+        ),
       ),
     );
   }
@@ -228,7 +248,7 @@ class HomeScreen extends StatelessWidget {
   List<QuickAction> _getQuickActions(AuthProvider authProvider) {
     return [
       QuickAction(
-        title: 'Cài đặt Model',
+        title: 'Cài đặt mã hàng',
         icon: FeatherIcons.settings,
         route: '/select-model',
         color: Colors.blue,
