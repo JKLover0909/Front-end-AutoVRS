@@ -4,6 +4,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/vrs_provider.dart';
 import '../providers/auth_provider.dart';
+import '../widgets/square_image_viewer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,6 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
             // Quick Actions
             _buildQuickActions(context),
+
+            const SizedBox(height: 24),
+
+            // Live Image Views
+            _buildLiveImageViews(context),
 
             const SizedBox(height: 24),
 
@@ -245,6 +251,102 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildLiveImageViews(BuildContext context) {
+    return Consumer<VRSProvider>(
+      builder: (context, vrsProvider, _) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Hình ảnh trực tiếp',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      vrsProvider.isAutoMode ? FeatherIcons.play : FeatherIcons.pause,
+                      color: vrsProvider.isAutoMode ? Colors.green : Colors.orange,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      vrsProvider.isAutoMode ? 'Auto Mode' : 'Manual Mode',
+                      style: TextStyle(
+                        color: vrsProvider.isAutoMode ? Colors.green : Colors.orange,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            // Three Square Image Views
+            SizedBox(
+              height: 200, // Fixed height for square containers
+              child: Row(
+                children: [
+                  // Gerber Design View
+                  Expanded(
+                    child: SquareImageViewer(
+                      title: 'Thiết kế Gerber',
+                      imagePath: null, // Will be populated based on current model
+                      backgroundColor: Colors.grey.shade700,
+                      placeholderText: 'Gerber Design',
+                      isInteractive: true,
+                      onImageTap: () {
+                        // Open gerber viewer
+                      },
+                      actionButtons: [
+                        IconButton(
+                          icon: const Icon(FeatherIcons.layers, size: 16),
+                          onPressed: () {
+                            // Open layers dialog
+                          },
+                          tooltip: 'Xem các layer',
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(width: 16),
+
+                  // AOI Reference
+                  Expanded(
+                    child: SquareImageViewer(
+                      title: 'Tham chiếu AOI',
+                      imagePath: null, // Will be populated from AOI system
+                      backgroundColor: Colors.grey.shade200,
+                      placeholderText: 'AOI Reference',
+                      isInteractive: true,
+                      onImageTap: () {
+                        // Open AOI viewer
+                      },
+                      actionButtons: [
+                        IconButton(
+                          icon: const Icon(FeatherIcons.zap, size: 16),
+                          onPressed: () {
+                            // Run AOI comparison
+                          },
+                          tooltip: 'Chạy so sánh AOI',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   List<QuickAction> _getQuickActions(AuthProvider authProvider) {
     return [
       QuickAction(
@@ -272,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: 'Thống kê',
         icon: FeatherIcons.barChart,
         route: '/statistics',
-        color: Colors.purple,
+        color: Colors.indigo,
         enabled: authProvider.canAccessFeature('worker'),
       ),
     ];
